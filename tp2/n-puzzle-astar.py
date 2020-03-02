@@ -52,14 +52,15 @@ paths = {initialState: []}
 
 visited = []
 
+start = time.time()
 while queue:
     #time.sleep(3)
     currState = queue[0]
     currMatrix = currState.matrix
     zeroLoc = [(index, row.index(0)) for index, row in enumerate(currState.matrix) if 0 in row][0]
-    print(zeroLoc)
-    print(currMatrix)
-    print(currState.h)
+    #print(zeroLoc)
+    #print(currMatrix)
+    #print(currState.h)
 
     if queue[0].h==0:
         break
@@ -117,14 +118,16 @@ while queue:
         if newMatrix not in visited:
             queue.append(newState)
 
-    print("\n")
-    for elem in queue:
-        print(elem.h)
+    #print("\n")
+    #for elem in queue:
+    #    print(elem.h)
     #time.sleep(1.5)
     queue.sort(key=lambda x: x.h, reverse=False)
-    for elem in queue:
-        print(elem.h)
-    print("\n")
+    #for elem in queue:
+    #    print(elem.h)
+    #print("\n")
+end = time.time()
+print(end - start)
 
 print("END")
 
