@@ -60,7 +60,7 @@ while queue:
     # -> 0 não está na primeira row
     #print(visited)
     if zeroLoc[0]!=0:
-        newMatrix = deepcopy(currMatrix)
+        newMatrix = [row[:] for row in currMatrix]
         newMatrix[zeroLoc[0]][zeroLoc[1]] = newMatrix[zeroLoc[0]-1][zeroLoc[1]]
         newMatrix[zeroLoc[0]-1][zeroLoc[1]] = 0
         newState = State(newMatrix, calculate_heuristics(newMatrix, final_positions))
@@ -72,7 +72,7 @@ while queue:
     # move 0 para baixo
     # -> 0 não está na última row
     if zeroLoc[0]!=2:
-        newMatrix = deepcopy(currMatrix)
+        newMatrix = [row[:] for row in currMatrix]
         newMatrix[zeroLoc[0]][zeroLoc[1]] = newMatrix[zeroLoc[0]+1][zeroLoc[1]]
         newMatrix[zeroLoc[0]+1][zeroLoc[1]] = 0
         print(newMatrix not in visited)
@@ -84,7 +84,7 @@ while queue:
     # move 0 para direita
     # -> 0 não está na última col
     if zeroLoc[1]!=2:
-        newMatrix = deepcopy(currMatrix)
+        newMatrix = [row[:] for row in currMatrix]
         newMatrix[zeroLoc[0]][zeroLoc[1]] = newMatrix[zeroLoc[0]][zeroLoc[1]+1]
         newMatrix[zeroLoc[0]][zeroLoc[1]+1] = 0
         newState = State(newMatrix, calculate_heuristics(newMatrix, final_positions))
@@ -96,7 +96,7 @@ while queue:
     # move 0 para esquerda
     # -> 0 não está na primeira col
     if zeroLoc[1]!=0:
-        newMatrix = deepcopy(currMatrix)
+        newMatrix = [row[:] for row in currMatrix]
         newMatrix[zeroLoc[0]][zeroLoc[1]] = newMatrix[zeroLoc[0]][zeroLoc[1]-1]
         newMatrix[zeroLoc[0]][zeroLoc[1]-1] = 0
         newState = State(newMatrix, calculate_heuristics(newMatrix, final_positions))
