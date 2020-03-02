@@ -1,7 +1,7 @@
 # n-puzzle-astar puzzle_n
 # h1: no of out of places pieces
 # h2: sum of manhattan distance to correct position
-from copy import copy, deepcopy
+import time
 
 class State:
     def __init__(self, matrix, hs):
@@ -30,16 +30,22 @@ def calculate_heuristics(matrix, final_positions):
                 total_offset += abs(a-c) + abs(b-d)
     
     return (out_of_place, total_offset) # (h1, h2)
+# 3x3
+#initialMatrix = [[1, 6, 2],[5, 7, 3],[0, 4, 8]]
+#final_positions = [(2,2),(0,0),(0,1),(0,2),(1,0),(1,1),(1,2),(2,0),(2,1)]
+#objectiveState = State([[1,2,3],[4,5,6],[7,8,0]], (0, 0))
 
-initialMatrix = [[1, 2, 3],
-          [5, 0, 6],
-          [4, 7, 8]]
+# 4x4
+initialMatrix = [[5,1,3,4],[2,0,7,8],[10,6,11,12],[9,13,14,15]]
+final_positions = [(3,3),(0,0),(0,1),(0,2),(0,3),(1,0),(1,1),(1,2),(1,3),(2,0),(2,1),(2,2),(2,3),(3,0),(3,1),(3,2)]
+objectiveState = State([[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,0]], (0, 0))
 
-final_positions = [(2,2),(0,0),(0,1),(0,2),(1,0),(1,1),(1,2),(2,0),(2,1)] #3x3
+
+nrow = len(initialMatrix)
+ncol = len(initialMatrix[0])
 
 h1, h2 = calculate_heuristics(initialMatrix, final_positions)
 initialState = State(initialMatrix, (h1, h2))
-objectiveState = State([[1,2,3],[4,5,6],[7,8,0]], (0, 0))
 
 queue = [initialState]
 paths = {initialState: []}
@@ -47,13 +53,18 @@ paths = {initialState: []}
 visited = []
 
 while queue:
+    #time.sleep(3)
     currState = queue[0]
     currMatrix = currState.matrix
     zeroLoc = [(index, row.index(0)) for index, row in enumerate(currState.matrix) if 0 in row][0]
-    visited.append(currMatrix)
+    print(zeroLoc)
+    print(currMatrix)
+    print(currState.h)
 
-    if queue[0]==objectiveState:
+    if queue[0].h==0:
         break
+
+    visited.append(currMatrix)
 
     queue.pop(0)
     # move 0 para cima
@@ -64,18 +75,18 @@ while queue:
         newMatrix[zeroLoc[0]][zeroLoc[1]] = newMatrix[zeroLoc[0]-1][zeroLoc[1]]
         newMatrix[zeroLoc[0]-1][zeroLoc[1]] = 0
         newState = State(newMatrix, calculate_heuristics(newMatrix, final_positions))
-        print(newMatrix not in visited)
+        #print(newMatrix not in visited)
         #print(newMatrix)
         #print(visited)
         if newMatrix not in visited:
             queue.append(newState)
     # move 0 para baixo
     # -> 0 não está na última row
-    if zeroLoc[0]!=2:
+    if zeroLoc[0]!=nrow-1:
         newMatrix = [row[:] for row in currMatrix]
         newMatrix[zeroLoc[0]][zeroLoc[1]] = newMatrix[zeroLoc[0]+1][zeroLoc[1]]
         newMatrix[zeroLoc[0]+1][zeroLoc[1]] = 0
-        print(newMatrix not in visited)
+        #print(newMatrix not in visited)
         #print(newMatrix)
         #print(visited)
         newState = State(newMatrix, calculate_heuristics(newMatrix, final_positions))
@@ -83,12 +94,12 @@ while queue:
             queue.append(newState)
     # move 0 para direita
     # -> 0 não está na última col
-    if zeroLoc[1]!=2:
+    if zeroLoc[1]!=ncol-1:
         newMatrix = [row[:] for row in currMatrix]
         newMatrix[zeroLoc[0]][zeroLoc[1]] = newMatrix[zeroLoc[0]][zeroLoc[1]+1]
         newMatrix[zeroLoc[0]][zeroLoc[1]+1] = 0
         newState = State(newMatrix, calculate_heuristics(newMatrix, final_positions))
-        print(newMatrix not in visited)
+        #print(newMatrix not in visited)
         #print(newMatrix)
         #print(visited)
         if newMatrix not in visited:
@@ -100,13 +111,20 @@ while queue:
         newMatrix[zeroLoc[0]][zeroLoc[1]] = newMatrix[zeroLoc[0]][zeroLoc[1]-1]
         newMatrix[zeroLoc[0]][zeroLoc[1]-1] = 0
         newState = State(newMatrix, calculate_heuristics(newMatrix, final_positions))
-        print(newMatrix not in visited)
+        #print(newMatrix not in visited)
         #print(newMatrix)
         #print(visited)
         if newMatrix not in visited:
             queue.append(newState)
 
-    queue.sort(key=lambda x: x.h, reverse=True)
+    print("\n")
+    for elem in queue:
+        print(elem.h)
+    #time.sleep(1.5)
+    queue.sort(key=lambda x: x.h, reverse=False)
+    for elem in queue:
+        print(elem.h)
+    print("\n")
 
 print("END")
 
