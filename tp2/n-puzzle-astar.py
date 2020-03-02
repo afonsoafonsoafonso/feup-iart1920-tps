@@ -1,6 +1,7 @@
 # n-puzzle-astar puzzle_n
 # h1: no of out of places pieces
 # h2: sum of manhattan distance to correct position
+from copy import copy, deepcopy
 
 class State:
     def __init__(self, matrix, hs):
@@ -57,40 +58,51 @@ while queue:
     queue.pop(0)
     # move 0 para cima
     # -> 0 não está na primeira row
-    print(visited)
+    #print(visited)
     if zeroLoc[0]!=0:
-        newMatrix = currMatrix
+        newMatrix = deepcopy(currMatrix)
         newMatrix[zeroLoc[0]][zeroLoc[1]] = newMatrix[zeroLoc[0]-1][zeroLoc[1]]
         newMatrix[zeroLoc[0]-1][zeroLoc[1]] = 0
         newState = State(newMatrix, calculate_heuristics(newMatrix, final_positions))
-        print(newMatrix)
+        print(newMatrix not in visited)
+        #print(newMatrix)
+        #print(visited)
         if newMatrix not in visited:
             queue.append(newState)
     # move 0 para baixo
     # -> 0 não está na última row
     if zeroLoc[0]!=2:
-        newMatrix = currMatrix
+        newMatrix = deepcopy(currMatrix)
         newMatrix[zeroLoc[0]][zeroLoc[1]] = newMatrix[zeroLoc[0]+1][zeroLoc[1]]
         newMatrix[zeroLoc[0]+1][zeroLoc[1]] = 0
+        print(newMatrix not in visited)
+        #print(newMatrix)
+        #print(visited)
         newState = State(newMatrix, calculate_heuristics(newMatrix, final_positions))
         if newMatrix not in visited:
             queue.append(newState)
     # move 0 para direita
     # -> 0 não está na última col
     if zeroLoc[1]!=2:
-        newMatrix = currMatrix
+        newMatrix = deepcopy(currMatrix)
         newMatrix[zeroLoc[0]][zeroLoc[1]] = newMatrix[zeroLoc[0]][zeroLoc[1]+1]
         newMatrix[zeroLoc[0]][zeroLoc[1]+1] = 0
         newState = State(newMatrix, calculate_heuristics(newMatrix, final_positions))
+        print(newMatrix not in visited)
+        #print(newMatrix)
+        #print(visited)
         if newMatrix not in visited:
             queue.append(newState)
     # move 0 para esquerda
     # -> 0 não está na primeira col
     if zeroLoc[1]!=0:
-        newMatrix = currMatrix
+        newMatrix = deepcopy(currMatrix)
         newMatrix[zeroLoc[0]][zeroLoc[1]] = newMatrix[zeroLoc[0]][zeroLoc[1]-1]
         newMatrix[zeroLoc[0]][zeroLoc[1]-1] = 0
         newState = State(newMatrix, calculate_heuristics(newMatrix, final_positions))
+        print(newMatrix not in visited)
+        #print(newMatrix)
+        #print(visited)
         if newMatrix not in visited:
             queue.append(newState)
 
